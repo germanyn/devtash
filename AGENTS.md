@@ -1,3 +1,31 @@
+# DevStash
+
+A developer knowledge hub for snippets, commands, prompts, notes, files, images links and custom types
+
+## Context Files
+
+Read the following to get the full context of the project:
+
+- @context/project-overview.md
+- @context/coding-standards.md
+- @context/ai-interaction.md
+- @context/current-feature.md
+
+## Commands
+
+- `npm run dev` — dev server (rewrites the nextjs-agent-rules block above)
+- `npm run lint` — ESLint (`eslint`, flat config in `eslint.config.mjs`)
+- `npm run build` — production build; also runs the type check
+- No test framework is installed.
+
+## Tailwind v4
+
+Tailwind is v4 — there is no `tailwind.config.*` file and no `@tailwind` directives. It is wired via `@tailwindcss/postcss`; theme tokens are declared with `@theme` inside `src/app/globals.css`. Do not add a v3-style config file or `@tailwind base` lines.
+
+## Generated / ignored
+
+`.next/`, `next-env.d.ts`, and `.env*` are gitignored; `next build` regenerates them. Do not edit `next-env.d.ts` by hand.
+
 <!-- BEGIN:nextjs-agent-rules -->
 
 # This is NOT the Next.js you know
