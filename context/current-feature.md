@@ -14,7 +14,7 @@
 
 ## History
 
-<!-- Keep this updated. Earliest to latest -->
+<!-- Keep this updated. Earliest to platest -->
 
 ### 2026-08-07 — Next.js initial setup
 
