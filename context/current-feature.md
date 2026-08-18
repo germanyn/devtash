@@ -1,10 +1,19 @@
 # Current feature
-Dashboard UI Phase 2 — collapsible sidebar with type links, favorite/recent collections, and a mobile drawer.
+<!-- Feature name and short description -->
 
 ## Status
 Completed
 
+## Goals
+
+<!-- Goals and requirements -->
+
+## Notes
+
+<!-- Any extra notes -->
+
 ## History
+
 <!-- Keep this updated. Earliest to latest -->
 
 ### 2026-08-07 — Next.js initial setup
@@ -36,4 +45,17 @@ Completed
 - Top bar gained a `PanelLeft` drawer toggle; desktop collapses to a 60px icon rail, mobile opens an overlay drawer with backdrop (click/Esc to close, body scroll locked).
 - Split sidebar into `section-heading.tsx`, `sidebar-link.tsx`, and `type-slug.ts` for separation of concerns.
 - Sidebar sections (Types, Favorites, Recent) made individually collapsible via a chevron toggle.
+- `npm run build` and `npm run lint` pass clean.
+
+### 2026-08-18 — Dashboard UI Phase 3 started
+
+- Added Dashboard UI Phase 3 as the current feature (status: In Progress).
+- Scope: main area to the right, recent collections, pinned items, 10 recent items, and 4 stats cards (items, collections, favorite items, favorite collections).
+- References: @context/features/dashboard-phase-3-spec.md, @context/screenshots/dashboard-ui-main.png, @src/lib/mock-data.js.
+
+### 2026-08-18 — Dashboard UI Phase 3 completed
+
+- Built the dashboard main content area (server-rendered) replacing the placeholder: 4 stat cards (items, collections, favorite items, favorite collections), recent collections grid, pinned items, and 10 most recent items (sorted by `createdAt`).
+- Added shadcn `card` and `badge` components (Base UI variant).
+- Refactored the dashboard route to SSR-first: `page.tsx` is a server component; interactive state (sidebar drawer/collapse, toolbar toggle, Escape handler) extracted into a client `DashboardShell`; main content passed as `children` so it stays server-rendered.
 - `npm run build` and `npm run lint` pass clean.
