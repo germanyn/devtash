@@ -1,32 +1,80 @@
-import { Button } from "@/components/ui/button";
+"use client";
+
+import { useCallback, useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
-import { FolderPlus, Layers, Plus, Search } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { PanelLeft, Search, FolderPlus, Plus } from "lucide-react";
+import { DashboardSidebar } from "@/components/dashboard/dashboard-sidebar";
 
 export default function DashboardPage() {
+  /* ------------------------------------------------------------------ */
+  /*  State                                                              */
+  /* ------------------------------------------------------------------ */
+
+  /** Mobile drawer open / close. */
+  const [mobileOpen, setMobileOpen] = useState(false);
+
+  /** Desktop collapsed rail. */
+  const [desktopCollapsed, setDesktopCollapsed] = useState(false);
+
+  /* ------------------------------------------------------------------ */
+  /*  Keyboard shortcut: Escape closes the mobile drawer                */
+  /* ------------------------------------------------------------------ */
+  const handleKeyDown = useCallback(
+    (e: KeyboardEvent) => {
+      if (e.key === "Escape" && mobileOpen) {
+        setMobileOpen(false);
+      }
+    },
+    [mobileOpen]
+  );
+
+  useEffect(() => {
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [handleKeyDown]);
+
+  /* ------------------------------------------------------------------ */
+  /*  Toggle handlers                                                    */
+  /* ------------------------------------------------------------------ */
+
+  /** Called by the top-bar drawer button. On mobile toggles the drawer;
+   *  on desktop toggles the rail. */
+  function toggleSidebar() {
+    if (window.innerWidth < 768) {
+      setMobileOpen((prev) => !prev);
+    } else {
+      setDesktopCollapsed((prev) => !prev);
+    }
+  }
+
+  /* ------------------------------------------------------------------ */
+  /*  Render                                                             */
+  /* ------------------------------------------------------------------ */
+
   return (
     <div className="flex h-screen bg-background text-foreground">
-      {/* Sidebar — full-height left column */}
-      <aside className="flex w-64 shrink-0 flex-col border-r border-border">
-        {/* Brand */}
-        <div className="flex items-center gap-2.5 px-4 py-4">
-          <div className="flex size-8 items-center justify-center rounded-lg bg-purple-600 text-white">
-            <Layers className="size-4" />
-          </div>
-          <span className="text-base font-semibold tracking-tight">
-            DevStash
-          </span>
-        </div>
-
-        {/* Sidebar placeholder */}
-        <div className="flex-1 px-4">
-          <h2 className="text-lg font-semibold">Sidebar</h2>
-        </div>
-      </aside>
+      {/* Sidebar */}
+      <DashboardSidebar
+        isOpen={mobileOpen}
+        onClose={() => setMobileOpen(false)}
+        collapsed={desktopCollapsed}
+      />
 
       {/* Right column: toolbar + main */}
       <div className="flex flex-1 flex-col overflow-hidden">
         {/* Toolbar */}
         <header className="flex items-center gap-3 border-b border-border px-4 py-3">
+          {/* Drawer toggle — always visible */}
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={toggleSidebar}
+            aria-label="Toggle sidebar"
+          >
+            <PanelLeft className="size-4" />
+          </Button>
+
           {/* Search */}
           <div className="relative w-full max-w-md">
             <Search className="pointer-events-none absolute left-2.5 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
@@ -52,7 +100,10 @@ export default function DashboardPage() {
 
         {/* Main content */}
         <main className="flex-1 overflow-auto p-6">
-          <h2 className="text-lg font-semibold">Main</h2>
+          <h1 className="text-xl font-semibold tracking-tight">Dashboard</h1>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Your developer knowledge hub
+          </p>
         </main>
       </div>
     </div>

@@ -1,19 +1,10 @@
 # Current feature
-<!-- Feature name and short description -->
+Dashboard UI Phase 2 — collapsible sidebar with type links, favorite/recent collections, and a mobile drawer.
 
 ## Status
-<!-- Not Started | In Progress | Completed -->
-
-## Goals
-
-<!-- Goals and requirements -->
-
-## Notes
-
-<!-- Any extra notes -->
+Completed
 
 ## History
-
 <!-- Keep this updated. Earliest to latest -->
 
 ### 2026-08-07 — Next.js initial setup
@@ -35,3 +26,14 @@
 - Top bar: search input (left) and two outlined display-only buttons — "New Collection" and "New Item" (right).
 - Dark mode set as default via `class="dark"` on `<html>` in `src/app/layout.tsx`; all colors use shadcn dark tokens.
 - `npm run build` passes; `/dashboard` prerenders as static. Changes on branch `feature/dashboard-phase-1` (uncommitted).
+
+### 2026-08-18 — Dashboard UI Phase 2 completed
+
+- Replaced the placeholder sidebar with a real collapsible sidebar (`src/components/dashboard/dashboard-sidebar.tsx`).
+- Types section links each `mockItemType` to `/items/<slug>` with its colored lucide icon.
+- Added Favorites and Recent collection sections (favorites = `isFavorite`; recent = remaining as a stand-in).
+- User avatar area (initials avatar, name, email, settings gear) pinned to the sidebar bottom.
+- Top bar gained a `PanelLeft` drawer toggle; desktop collapses to a 60px icon rail, mobile opens an overlay drawer with backdrop (click/Esc to close, body scroll locked).
+- Split sidebar into `section-heading.tsx`, `sidebar-link.tsx`, and `type-slug.ts` for separation of concerns.
+- Sidebar sections (Types, Favorites, Recent) made individually collapsible via a chevron toggle.
+- `npm run build` and `npm run lint` pass clean.
