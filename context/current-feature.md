@@ -59,3 +59,20 @@ Completed
 - Added shadcn `card` and `badge` components (Base UI variant).
 - Refactored the dashboard route to SSR-first: `page.tsx` is a server component; interactive state (sidebar drawer/collapse, toolbar toggle, Escape handler) extracted into a client `DashboardShell`; main content passed as `children` so it stays server-rendered.
 - `npm run build` and `npm run lint` pass clean.
+
+### 2026-08-20 — Database setup started
+
+- Added Prisma + Neon PostgreSQL setup as the current feature (status: In Progress).
+- Scope: Neon serverless Postgres, initial Prisma 7 schema (User, Item, ItemType, Collection, Tag, ItemTag + NextAuth models), indexes/cascade deletes, migrations-only workflow.
+- References: @context/features/database-spec.md, @context/project-overview.md.
+
+### 2026-08-20 — Database setup completed
+
+- Installed Prisma 7.9.1 (`prisma`, `@prisma/client`) with the Neon serverless driver (`@prisma/adapter-neon` + `@neondatabase/serverless`); added `"type": "module"` per Prisma 7 ESM requirements.
+- Prisma 7 breaking changes handled: new `prisma.config.ts` at root (CLI datasource URL + optional shadow DB, dotenv-loaded), `prisma-client` generator with required output to `src/generated/prisma`, mandatory driver adapter, explicit `prisma generate`/`prisma db seed` (no longer auto-run), seed via `tsx prisma/seed.ts`.
+- Initial schema: User (+NextAuth fields), Item, ItemType, Collection, Tag, ItemTag from the project-overview draft; NextAuth Account/Session/VerificationToken models added.
+- Indexes on all FKs (+ `Item(userId, createdAt)`, `Tag @@unique([userId, name])`, `Account @@unique([provider, providerAccountId])`, unique session token); cascades: all user-owned data Cascade, ItemTag both sides Cascade, Item→Collection SetNull, Item→ItemType Restrict.
+- Applied migration `20260820215857_init`; seeded the 7 system item types (Snippet, Prompt, Note, Command, File, Image, URL); `migrate status` in sync.
+- Added `src/lib/db.ts` client singleton (PrismaNeon adapter, dev global cache); generated client excluded from ESLint.
+- `.env` currently has only `DATABASE_URL` (pooled); migrations fall back to it — add `DIRECT_DATABASE_URL` + `SHADOW_DATABASE_URL` later for the production-grade setup.
+- `npm run lint` and `npm run build` pass clean. Work on branch `feature/database-setup`.
